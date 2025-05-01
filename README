@@ -1,0 +1,64 @@
+README - CPSC 471 Programming Assignment 1
+==========================================
+
+Group Members:
+--------------
+1. Michael Baldo (mbaldo2@csu.fullerton.edu)
+2.
+3.
+4.
+
+
+Programming Language:
+---------------------
+Python 3
+
+
+How to Execute the Program:
+---------------------------
+
+1. Start the FTP server:
+   $ python serv.py
+
+   - This will start the server on port 12000 and wait for client connections.
+
+2. Start the FTP client:
+   $ python cli.py <server_address> <server_port>
+
+   Example:
+   $ python cli.py localhost 12000
+
+   - This will connect the client to the server's control channel.
+
+3. Use the following FTP-like commands at the prompt:
+
+   ftp> put <filename>
+      - Uploads a file to the server using a separate data connection.
+
+   ftp> get <filename>
+      - Downloads a file from the server using a separate data connection.
+
+   ftp> ls
+      - Lists files in the server's directory via a data connection.
+
+   ftp> quit
+      - Disconnects from the server.
+
+
+Special Notes:
+--------------
+- The FTP implementation uses **two TCP connections**:
+  - A persistent **control connection** for commands.
+  - A temporary **data connection** for transferring file data or directory listings.
+  
+- The data connection uses **ephemeral ports**, created dynamically by the client for each transfer.
+
+- Custom protocol: All commands and data messages use a **10-byte header** to indicate message size.
+
+- File transfer operations (put/get) use manual `sendAll()` and `recvAll()` loops to ensure complete transmission over TCP sockets.
+
+- The server will save uploaded files with a `received_` prefix, e.g., `received_sample.txt`.
+
+- The project assumes both client and server are run on machines that can communicate (e.g., same host or LAN).
+
+
